@@ -1,12 +1,14 @@
 ---
 id: osrk04
-tags: []
+base_name: scenario
+tags:
+  - ruby
+presentation_date: "2024-08-24"
 version: 1.0.0
-licenses: []
+licenses: ['MIT']
 author:
-  markup_language:
+  markup_language: rd
   name: makicamel
   email: unright@gmail.com
   rubygems_user: makicamel
-  slideshare_user:
-  speaker_deck_user:
+source_code_uri: "https://github.com/makicamel/osrk04"
