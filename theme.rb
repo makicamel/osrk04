@@ -6,7 +6,7 @@ base_color             = '#333333'
 accent_color           = '#5a9cbb'
 @default_font          = 'Federo'
 @font_family           = find_font_family(@default_font)
-@bold_font             = @default_font
+@bold_font             = 'Noto Sans JP'
 @bold_font_family      = find_font_family(@bold_font)
 @monospace_font        = 'HackGen'
 @monospace_font_family = find_font_family(@monospace_font)
@@ -61,6 +61,11 @@ include_theme("per-slide-background-image")
 include_theme("body-background-image")
 include_theme("tag")
 include_theme("syntax-highlighting")
+@footer_comment_props = {
+  "size" => (@x_small_font_size * 1).ceil,
+  "font_family" => @bold_font,
+  "color" => @footer_comment_color,
+}
 include_theme("default-comment")
 
 include_theme("title-slide-background-image")
@@ -69,7 +74,7 @@ include_theme("slide-background-image")
 @lightning_talk_proc_name = "lightning-rabbit"
 @lightning_talk_as_large_as_possible = true
 @lightning_talk_color = base_color
-@lightning_talk_font_family = 'Noto Sans JP'
+@lightning_talk_font_family = @bold_font
 include_theme("lightning-talk-toolkit")
 
 match(TitleSlide) do |slides|
