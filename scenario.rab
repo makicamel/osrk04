@@ -1,0 +1,671 @@
+= dRuby 入門者による\nあなたの身近にある\ndRuby 入門
+
+: author
+   @makicamel
+: content-source
+   大阪 Ruby 会議 04
+: date
+   2024.08.24
+: theme
+   theme
+
+= 自己紹介
+
+  * @makicamel / 川原万季
+  * Ruby 💎 とビール 🍻 とお酒が好き
+  * 好きな VR ゲームは BeatSaber ⚔️
+  * ㈱アンドパッド👷‍♂
+
+  # image
+  # src = image/makicamel.png
+  # relative_width = 10
+  # align = right
+  # vertical_align = top
+  # relative_margin_right = -4
+  # relative_margin_top = 0
+
+# = dRuby\n知っている方？\n🙋
+
+# = dRuby\n使っている方？\n🙋
+
+= dRuby
+　
+= dRuby
+
+* distributed ruby
+
+= dRuby
+
+* distributed ruby
+  * 分散 Ruby
+
+= dRuby
+
+  * distributed ruby
+    * 分散 Ruby
+  * 分散オブジェクトシステムを実現するライブラリ
+
+= dRuby
+
+  * distributed ruby
+    * 分散 Ruby
+  * 分散オブジェクトシステムを実現するライブラリ
+  * 1999 年初出
+  * 関将俊さん作
+
+  # image
+  # src = image/shuku.png
+  # relative_width = 30
+  # align = right
+  # vertical_align = bottom
+  # relative_padding_right = -4
+  # relative_padding_bottom = -14
+
+= dRuby
+
+  * 1999 年初出
+  * ((<URL:https://gist.github.com/seki/5713863>))
+
+  # image
+  # src = image/1st-druby.png
+  # relative_height = 140
+  # align = center
+  # vertical_align = bottom
+  # relative_margin_top = 0
+
+= dRuby
+
+((-dRubyによる分散・Webプログラミング / 関将俊\n((<URL:https://www.ohmsha.co.jp/book/9784274066092/>))-))
+  # image
+  # src = image/druby.jpg
+  # relative_height = 100
+  # align = center
+  # vertical_align = center
+  # relative_margin_top = -10
+
+= dRuby
+
+  * distributed ruby
+    * 分散 Ruby
+  * 分散オブジェクトシステムを実現するライブラリ
+  * 1999 年初出
+  * 関将俊さん作
+
+= 分散オブジェクトシステム
+
+  * とは？
+
+= 分散オブジェクトシステム
+
+  * とは？
+  * プロセスやネットワークを超えてメッセージを送る
+    * 他のプロセスのオブジェクトのメソッドを呼び出せる
+
+= 分散オブジェクトシステム
+
+  * とは？
+  * プロセスやネットワークを超えてメッセージを送る
+    * 他のプロセスのオブジェクトのメソッドを呼び出せる
+  * とは？
+
+= 分散オブジェクトシステム
+
+  * DRb.start_service(uri=nil, front=nil, config_or_acl=nil)((-DRb.#start_service (Ruby 3.3 リファレンスマニュアル)\n((<URL:https://docs.ruby-lang.org/ja/3.3/method/DRb/m/start_service.html>))-))
+    * dRuby のサービス(サーバ)を起動するメソッド
+    * uri: 起動したサービスを紐づける uri
+    * front: uri に紐づけるオブジェクト
+
+= 分散オブジェクトシステム
+  * DRb::DRbObject((-class DRb::DRbObject (Ruby 3.3 リファレンスマニュアル)\n((<URL:https://docs.ruby-lang.org/ja/3.3/class/DRb=3a=3aDRbObject.html>))-))
+    * リモートの dRuby オブジェクトを表すオブジェクト
+  * DRb::DRbObject.new_with_uri(uri)((-DRb::DRbObject.new_with_uri (Ruby 3.3 リファレンスマニュアル)\n((<URL:https://docs.ruby-lang.org/ja/latest/method/DRb=3a=3aDRbObject/s/new_with_uri.html>))-))
+    * URI から新しい DRbObject を生成する
+    * 別プロセスの DRb.#start_service で指定したフロントオブジェクトを指すリモートオブジェクトを取り出す
+
+= 分散オブジェクトシステム
+
+  # rouge ruby
+  # terminal1
+  $ irb -r drb
+  front_object = { greeting: 'Hello, Osaka!' }
+  DRb.start_service 'druby://127.0.0.1:10001', front_object
+
+
+  # terminal2
+  $ irb -r drb
+  remote_object = DRbObject.new_with_uri 'druby://127.0.0.1:10001'
+  remote_object[:greeting]
+  # => "Hello, Osaka!"
+  remote_object[:greeting] = 'よろしゅう大阪'
+
+
+  # terminal1
+  front_object
+  # => { greeting: "よろしゅう大阪" }
+
+= 分散オブジェクトシステム
+
+  # rouge ruby
+  # terminal3
+  $ irb -r drb
+  class Puts
+    def self.puts(str)
+      $stdout.puts(str)
+    end
+  end
+  DRb.start_service('druby://127.0.0.1:10002', Puts)
+
+  # terminal4
+  $ irb -r drb
+  puts = DRbObject.new_with_uri 'druby://127.0.0.1:10002'
+  puts.puts 'おおきに'
+
+  #
+  # => ?
+
+= 分散オブジェクトシステム
+
+  # rouge ruby
+  # terminal3
+  $ irb -r drb
+  class Puts
+    def self.puts(str)
+      $stdout.puts(str)
+    end
+  end
+  DRb.start_service('druby://127.0.0.1:10002', Puts)
+
+  # terminal4
+  $ irb -r drb
+  server = DRbObject.new_with_uri 'druby://127.0.0.1:10002'
+  server.puts 'おおきに'
+
+  # terminal3
+  # => おおきに
+
+= 分散オブジェクトシステム
+
+  * プロセスやネットワークを超えてメッセージを送る
+    * 他のプロセスのオブジェクトのメソッドを呼び出せる
+  * かんたんにサーバが作れる
+
+= 分散オブジェクトシステム
+
+  * プロセスやネットワークを超えてメッセージを送る
+    * 他のプロセスのオブジェクトのメソッドを呼び出せる
+  * かんたんにサーバが作れる
+
+  # image
+  # src = image/yume.png
+  # relative_width = 30
+  # align = right
+  # vertical_align = bottom
+  # relative_padding_right = -4
+  # relative_padding_bottom = -14
+
+= 分散オブジェクトシステム
+
+  * リアルワールド dRuby 活用例
+
+= 分散オブジェクトシステム
+
+((-岡山天体物理観測所広視野赤外カメラの製作 / 柳澤　顕史\n ((<URL:https://www.astr.tohoku.ac.jp/~akiyama/astroinst2015/20151207_yanagisawa.pdf>))\n Rinda in the real-world embedded systems. / 関将俊\n ((<URL:https://rubykaigi.org/2020-takeout/presentations/m_seki.html>))-))
+
+  # image
+  # src = image/tenbodai.jpg
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+  # relative_margin_top = -6
+
+= 分散オブジェクトシステム
+
+  # image
+  # src = image/rapid_test_device.png
+  # relative_height = 70
+  # align = center
+  # vertical_align = center
+  # relative_margin_top = 0
+
+((-dRuby in the real-world embedded systems. / 関将俊　園川龍也\n((<URL:https://www.druby.org/seki-RK2021.pdf>))\n((<URL:https://rubykaigi.org/2021-takeout/presentations/m_seki.html>))-))
+
+= 分散オブジェクトシステム
+
+  # image
+  # src = image/twitter.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+  # relative_margin_top = 0
+
+((-Scaling Twitter / Blaine Cook\n((<URL:https://www.slideshare.net/slideshow/scaling-twitter/41197>))\n-))
+
+= 分散オブジェクトシステム
+
+  * すごい
+
+= 分散オブジェクトシステム
+
+  * すごすぎる
+
+= 分散オブジェクトシステム
+
+  * すごすぎる
+
+  # image
+  # src = image/midika.png
+  # relative_width = 40
+  # align = right
+  # vertical_align = bottom
+  # relative_padding_right = -4
+  # relative_padding_bottom = -14
+
+= dRuby 入門者によるあなたの身近にある dRuby 入門
+　
+= わたしたちの身近にある dRuby
+
+  * RSpec
+  * ActiveSupport
+  * Rabbit
+  * るりま
+
+= わたしたちの身近にある dRuby
+
+  * ((*RSpec*)) ⬅️
+  * ActiveSupport
+  * Rabbit
+  * るりま
+
+= RSpec
+
+  * drb オプション
+
+  # rouge bash
+  $ rspec --help
+      -X, --[no-]drb                 Run examples via DRb.
+        --drb-port PORT              Port to connect to the DRb server.
+
+= RSpec
+
+  * アプリケーションを dRuby プロセスに読み込んでテストサーバにする
+  * rspec 実行時にテストサーバでテスト実行する
+
+= RSpec
+
+  # image
+  # src = image/rspec-0.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+
+= RSpec
+
+  # image
+  # src = image/rspec-1.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+
+= RSpec
+
+  # image
+  # src = image/rspec-2.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+
+= RSpec
+
+  # image
+  # src = image/rspec-3.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+
+= RSpec
+
+  # image
+  # src = image/rspec-4.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+
+= RSpec
+
+  # image
+  # src = image/rspec-5.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+
+= RSpec
+
+  * テストサーバ
+  * プリローダ
+    * アプリケーション起動時間を省略
+  * e.g. spork((-spork\n((<URL:https://github.com/sporkrb/spork>))-))
+    * A DRb server for testing frameworks
+    * ※ 最終コミットは 2014 年
+    * 2024 年現在はあまり使われていないかも
+
+= わたしたちの身近にある dRuby
+
+  * RSpec
+  * ((*ActiveSupport*)) ⬅️
+  * Rabbit
+  * るりま
+
+= ActiveSupport
+
+  * ActiveSupport::TestCase#parallelize((-ActiveSupport::TestCase\n((<URL:https://api.rubyonrails.org/classes/ActiveSupport/TestCase.html#method-c-parallelize>))-))
+  * テストの並列化
+  * 使用マシンのコア数分プロセスをフォーク
+
+= ActiveSupport
+
+* rails new で test_helper.rb を生成
+  * デフォルトで parallelize が記述されている
+* 何も意識しなくてもテストが並列実行される((-※ Minitest のみ対応-))
+
+
+    # rouge ruby
+    # test/test_helper.rb
+    module ActiveSupport
+      class TestCase
+        parallelize(workers: :number_of_processors)
+
+        fixtures :all
+      end
+    end
+
+= ActiveSupport
+
+  * ActiveSupport::TestCase#parallelize の並列実行のしくみ
+
+= ActiveSupport
+
+  # image
+  # src = image/activesupport-1.png
+  # relative_height = 90
+  # align = center
+  # vertical_align = center
+
+= ActiveSupport
+
+  # image
+  # src = image/activesupport-2.png
+  # relative_height = 90
+  # align = center
+  # vertical_align = center
+
+= ActiveSupport
+
+  # image
+  # src = image/activesupport-3.png
+  # relative_height = 90
+  # align = center
+  # vertical_align = center
+
+= ActiveSupport
+
+  # image
+  # src = image/activesupport-4.png
+  # relative_height = 90
+  # align = center
+  # vertical_align = center
+
+= ActiveSupport
+
+  # image
+  # src = image/activesupport-5.png
+  # relative_height = 90
+  # align = center
+  # vertical_align = center
+
+= ActiveSupport
+
+  # image
+  # src = image/activesupport-6.png
+  # relative_height = 90
+  # align = center
+  # vertical_align = center
+
+= ActiveSupport
+
+  # image
+  # src = image/activesupport-7.png
+  # relative_height = 90
+  # align = center
+  # vertical_align = center
+
+= ActiveSupport
+
+  # image
+  # src = image/activesupport-8.png
+  # relative_height = 90
+  # align = center
+  # vertical_align = center
+
+= ActiveSupport
+
+  * 並列実行のしくみ
+    * アサーションの管理を dRuby に任せる((-テスト結果の管理は親プロセスの仕事-))
+    * フォークしたプロセスが各個アサーションを引き出しテスト実行
+
+= わたしたちの身近にある dRuby
+
+  * RSpec
+  * ActiveSupport
+  * ((*Rabbit*)) ⬅️
+  * るりま
+
+= Rabbit
+
+((-Contribute to Ruby - Yukihiro "Matz" Matsumoto\n((<URL:https://speakerdeck.com/matz/contribute-to-ruby-rubykaigi-2022?slide=25>))\n((<URL:https://rubykaigi.org/2022/presentations/yukihiro_matz.html>))-))
+
+  # image
+  # src = image/rabbit-joy.png
+  # relative_height = 96
+  # align = center
+  # vertical_align = center
+  # relative_margin_top = -10
+
+= Rabbit
+
+  * Rubyist 御用達プレゼンテーションツール((-Rabbit\n((<URL:https://rabbit-shocker.org/ja/>))\n((<URL:https://github.com/rabbit-shocker/rabbit>))-))
+    * うさぎとかめでお馴染み
+  * 須藤功平さん作
+
+= Rabbit
+
+  * デフォルトで dRuby サーバを立ち上げる
+
+  # rouge ruby
+  class Rabbit::Command::Rabbit
+    def do_display
+      # ...
+      front = make_front(canvas)
+      setup_druby(front) if @options.use_druby
+      # ...
+    end
+
+    def setup_druby(front)
+      require "drb/drb"
+      begin
+        DRb.start_service(@options.druby_uri, front)
+      # ...
+      end
+    end
+  end
+
+= Rabbit
+
+  # rouge ruby
+  DRb.start_service(@options.druby_uri, front)
+
+フロントオブジェクトを触ることができる
+
+= Rabbit
+
+  # rouge bash
+  # terminal5
+  $ irb -r drb
+  rabbit = DRbObject.new_with_uri 'druby://127.0.0.1:10101' # rabbitのdRubyサーバのuri
+  rabbit.title
+  # => "dRuby 入門者による\nあなたの身近にある\ndRuby 入門"
+  %w[Rabbit最高  🐇🐢🐇🐢🐇🐢🐇🐢🐇🐢 dRubyすごい 大阪たのしい🐙].each { rabbit.append_comment _1 }
+  rabbit.available_interfaces
+  # => [...]
+  rabbit.toggle_fullscreen
+
+フロントオブジェクトにメッセージを送ることで Rabbit を操作できる
+
+= Rabbit
+
+  * API 提供
+
+= Rabbit API
+
+  * RabbiRack((-RabbiRack\n((<URL:https://rabbit-shocker.org/ja/rabbirack>))\n((<URL:https://github.com/rabbit-shocker/rabbirack>))\n※ macOS では((<URL:https://github.com/rabbit-shocker/rabbit/commit/2b2ce805d98fd972d0a288ac7df944e53d48bbbf>))の適用が必要-))
+    * Web ブラウザから Rabbit を操作するツール
+
+  # rouge ruby
+  get "/pages/next" do
+    @rabbit.move_to_next_if_can
+    haml :index
+  end
+
+= Rabbit API
+
+  * Rabbiter((-Rabbiter\n((<URL:https://rabbit-shocker.org/ja/rabbiter>))\n((<URL:https://github.com/rabbit-shocker/rabbiter>))\n※ Twitter (現 X) が壊れているので 2024 年 8 月現在は動かせない-))
+    * Twitter からツイートを収集し、コメントとして Rabbit に流しこむツール
+
+  # rouge ruby
+    rabbit = DRbObject.new_with_uri(options.rabbit_uri)
+  client = Rabbiter::Client.new(logger)
+  client.start(*options.filters) do |status|
+    # ...
+    comment = "@#{status.user.screen_name}: #{clean_text(status, options)}"
+    rabbit.append_comment(comment)
+  end
+
+= わたしたちの身近にある dRuby
+
+  * RSpec
+  * ActiveSupport
+  * Rabbit
+  * ((*るりま*)) ⬅️
+
+= るりま
+
+((-オブジェクト指向スクリプト言語 Ruby リファレンスマニュアル\n((<URL:https://docs.ruby-lang.org/ja/latest/doc/index.html>))-))
+
+  # image
+  # src = image/rurema.png
+  # relative_height = 100
+  # align = center
+  # vertical_align = center
+  # relative_margin_top = -8
+
+= るりま
+
+  * doctree
+    * ドキュメント
+    * ((<URL:https://github.com/rurema/doctree>))
+  * BitClust
+    * ドキュメントシステム
+    * リファレンスデータベースの更新、表示、検索、html 生成など
+    * ((<URL:https://github.com/rurema/bitclust>))
+
+= るりま
+
+  * Ruby リファレンスマニュアル改善計画進行中
+    * るりま大刷新計画2022最終報告
+      * ((<URL:https://gist.github.com/znz/c854585d93fb2c4b6b181870c5a509a2>))
+      * ((<URL:https://www.ruby.or.jp/ja/news/20230808>))
+    * History of Japanese Ruby reference manual, and future - Kazuhiro NISHIYAMA
+      * ((<URL:https://slide.rabbit-shocker.org/authors/znz/rubykaigi2022-rurema/>))
+      * ((<URL:https://rubykaigi.org/2022/presentations/znz.html>))
+    * docs.ruby-lang.org/ja/ の生成方法を変えた - Kazuhiro NISHIYAMA
+      * ((<URL:https://speakerdeck.com/znz/nosheng-cheng-fang-fa-wobian-eta>))
+
+= BitClust
+
+  * BitClust データベース
+    * rd をコンパイル
+    * データをテキストファイルで持つ
+
+  # rouge bash
+  # BitClust データベースの初期化・生成
+  bitclust setup
+
+  # BitClust データベースから指定した種類(ここではライブラリ)のエントリをリストする
+  bitclust list --library
+
+  # BitClust データベースから静的 html を生成
+  bitclust statichtml -o ~/bitclust-html
+
+  # リファレンスの 1 ファイルから html を生成
+  bitclust htmlfile refm/api/src/_builtin/Range > Range.html
+
+= BitClust
+
+  * refe((-ReFe\n((<URL:https://i.loveruby.net/ja/prog/refe.html>))-))
+    * Ruby リファレンスマニュアルのエントリを引くためのコマンドライン用ツール
+    * BitClust データベースを利用
+    * デーモン化
+      * データベースをフロントオブジェクトとして dRuby サーバを起動
+
+  # rouge bash
+  refe --server=druby://127.0.0.1:12345
+
+= BitClust
+
+  * データベースとしての Ruby
+    * PORO でデータ操作
+    * ファイルに永続化
+    * SQL とか O/R マッピングとか要らない
+    * ふつうの Ruby プログラミング
+
+= わたしたちの身近にある dRuby
+
+  * プリローダ
+  * 並列
+  * API
+  * データベース
+
+  # image
+  # src = image/yume.png
+  # relative_width = 30
+  # align = right
+  # vertical_align = bottom
+  # relative_padding_right = -4
+  # relative_padding_bottom = -14
+
+= わたしたちの身近にある dRuby
+
+  * プリローダ
+  * 並列
+  * API
+  * データベース
+
+  # image
+  # src = image/nyuumon.png
+  # relative_width = 44
+  # align = right
+  # vertical_align = bottom
+  # relative_padding_right = -4
+  # relative_padding_bottom = -14
+
+
+= dRuby
+
+((-dRubyによる分散・Webプログラミング / 関将俊\n((<URL:https://www.ohmsha.co.jp/book/9784274066092/>))-))
+  # image
+  # src = image/druby.jpg
+  # relative_height = 100
+  # align = center
+  # vertical_align = center
+  # relative_margin_top = -10
+
+= ご清聴\nありがとう\nございました
