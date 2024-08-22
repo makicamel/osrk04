@@ -4,11 +4,11 @@
 
 base_color             = '#333333'
 accent_color           = '#5a9cbb'
-@default_font          = 'Federo'
+@default_font          = 'Roboto'
 @font_family           = find_font_family(@default_font)
 @bold_font             = 'Noto Sans JP'
 @bold_font_family      = find_font_family(@bold_font)
-@monospace_font        = 'HackGen'
+@monospace_font        = 'Ricty'
 @monospace_font_family = find_font_family(@monospace_font)
 
 @default_item1_mark_color = accent_color
@@ -24,6 +24,7 @@ accent_color           = '#5a9cbb'
 @x_small_font_size    = screen_size(3 * Pango::SCALE)
 @xx_small_font_size   = screen_size(2.8 * Pango::SCALE)
 @xxx_small_font_size  = screen_size(2.5 * Pango::SCALE)
+zero_font_size        = @x_small_font_size / 20
 @script_font_size            = @x_small_font_size
 @large_script_font_size      = @small_font_size
 @x_large_script_font_size    = @large_font_size
@@ -37,6 +38,11 @@ accent_color           = '#5a9cbb'
 
 @title_slide_background_image = 'image/title_background.png'
 @slide_background_image = 'image/normal_background.png'
+
+@image_caption_color = base_color
+@default_emphasis_color = accent_color
+
+@foot_text_block_line_width = 0
 
 set_foreground(base_color)
 # set_background(@default_background)
@@ -84,7 +90,7 @@ end
 match(TitleSlide, Title) do |titles|
   titles.margin_left = -360
   titles.padding_top = @space * 6
-  titles.prop_set("font-family", @bold_font)
+  titles.prop_set("font-family", 'Roboto-bold')
   titles.prop_set("size", @xxx_large_font_size)
   titles.prop_set("weight", "bold")
 end
@@ -116,6 +122,32 @@ match(Slide, HeadLine) do |heads|
   heads.margin_bottom = 40
   heads.prop_set("size", @x_large_font_size)
   heads.prop_set("weight", "SemiBold")
+end
+
+match("**", ReferText) do |texts|
+  texts.prop_set("foreground", base_color)
+end
+
+match("**", FootTextBlock) do |text_block|
+  text_block.margin_bottom = 0
+  text_block.prop_set("foreground", base_color)
+  text_block.prop_set("size", @xxx_small_font_size)
+end
+
+match("**", FootText) do
+  each do |text|
+    if text["order_added"]
+      order_text = text.elements.first
+      order_text.prop_set("foreground", "white")
+      order_text.prop_set("size", zero_font_size)
+    end
+  end
+end
+
+match("**", Footnote) do |footnote|
+  footnote.margin_bottom = 0
+  footnote.prop_set("foreground", "white")
+  footnote.prop_set("size", zero_font_size)
 end
 
 match(Slide) do |slides|
