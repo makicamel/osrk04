@@ -1,4 +1,5 @@
---size 1200,675 scenario.rab
+--size 1600,900 scenario.rab
+--paper-size=1600,900
 --use-druby
 --output-druby-uri
 --type=memory

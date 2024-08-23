@@ -50,12 +50,12 @@
   * 関将俊さん作
 
   # image
-  # src = image/shuku.png
+  # src = image/makicamel-shuku.png
   # relative_width = 30
   # align = right
   # vertical_align = bottom
   # relative_padding_right = -4
-  # relative_padding_bottom = -14
+  # relative_padding_bottom = -10
 
 = dRuby
 
@@ -173,12 +173,12 @@
   * かんたんにサーバが作れる
 
   # image
-  # src = image/yume.png
+  # src = image/makicamel-yume.png
   # relative_width = 30
   # align = right
   # vertical_align = bottom
   # relative_padding_right = -4
-  # relative_padding_bottom = -14
+  # relative_padding_bottom = -10
 
 = 分散オブジェクトシステム
 
@@ -245,12 +245,12 @@
   * すごすぎる
 
   # image
-  # src = image/midika.png
+  # src = image/makicamel-mijika.png
   # relative_width = 40
   # align = right
   # vertical_align = bottom
   # relative_padding_right = -4
-  # relative_padding_bottom = -14
+  # relative_padding_bottom = -10
 
 = dRuby 入門者によるあなたの身近にある dRuby 入門
 　
@@ -612,12 +612,12 @@
   * データベース
 
   # image
-  # src = image/yume.png
+  # src = image/makicamel-yume.png
   # relative_width = 30
   # align = right
   # vertical_align = bottom
   # relative_padding_right = -4
-  # relative_padding_bottom = -14
+  # relative_padding_bottom = -10
 
 = たとえば明日から dRuby を使うとしたら
 
@@ -637,12 +637,12 @@
   * 手に馴染む道具で検討して固まったら本実装に入るのも手かも
 
   # image
-  # src = image/nyuumon.png
+  # src = image/makicamel-nyuumon.png
   # relative_width = 44
   # align = right
   # vertical_align = bottom
   # relative_padding_right = -4
-  # relative_padding_bottom = -14
+  # relative_padding_bottom = -10
 
 = dRuby
 
