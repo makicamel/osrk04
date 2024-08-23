@@ -24,10 +24,6 @@
   # relative_margin_right = -4
   # relative_margin_top = 0
 
-# = dRuby\n知っている方？\n🙋
-
-# = dRuby\n使っている方？\n🙋
-
 = dRuby
 　
 = dRuby
@@ -97,91 +93,72 @@
 
 = 分散オブジェクトシステム
 
-  * とは？
   * プロセスやネットワークを超えてメッセージを送る
     * 他のプロセスのオブジェクトのメソッドを呼び出せる
 
 = 分散オブジェクトシステム
 
-  * とは？
-  * プロセスやネットワークを超えてメッセージを送る
-    * 他のプロセスのオブジェクトのメソッドを呼び出せる
-  * とは？
+  # image
+  # src = image/dist-1.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
 
 = 分散オブジェクトシステム
 
-  * DRb.start_service(uri=nil, front=nil, config_or_acl=nil)((-DRb.#start_service (Ruby 3.3 リファレンスマニュアル)\n((<URL:https://docs.ruby-lang.org/ja/3.3/method/DRb/m/start_service.html>))-))
-    * dRuby のサービス(サーバ)を起動するメソッド
-    * uri: 起動したサービスを紐づける uri
-    * front: uri に紐づけるオブジェクト
-
-= 分散オブジェクトシステム
-  * DRb::DRbObject((-class DRb::DRbObject (Ruby 3.3 リファレンスマニュアル)\n((<URL:https://docs.ruby-lang.org/ja/3.3/class/DRb=3a=3aDRbObject.html>))-))
-    * リモートの dRuby オブジェクトを表すオブジェクト
-  * DRb::DRbObject.new_with_uri(uri)((-DRb::DRbObject.new_with_uri (Ruby 3.3 リファレンスマニュアル)\n((<URL:https://docs.ruby-lang.org/ja/latest/method/DRb=3a=3aDRbObject/s/new_with_uri.html>))-))
-    * URI から新しい DRbObject を生成する
-    * 別プロセスの DRb.#start_service で指定したフロントオブジェクトを指すリモートオブジェクトを取り出す
+  # image
+  # src = image/dist-2.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
 
 = 分散オブジェクトシステム
 
-  # rouge ruby
-  # terminal1
-  $ irb -r drb
-  front_object = { greeting: 'Hello, Osaka!' }
-  DRb.start_service 'druby://127.0.0.1:10001', front_object
-
-
-  # terminal2
-  $ irb -r drb
-  remote_object = DRbObject.new_with_uri 'druby://127.0.0.1:10001'
-  remote_object[:greeting]
-  # => "Hello, Osaka!"
-  remote_object[:greeting] = 'よろしゅう大阪'
-
-
-  # terminal1
-  front_object
-  # => { greeting: "よろしゅう大阪" }
+  # image
+  # src = image/dist-3.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
 
 = 分散オブジェクトシステム
 
-  # rouge ruby
-  # terminal3
-  $ irb -r drb
-  class Puts
-    def self.puts(str)
-      $stdout.puts(str)
-    end
-  end
-  DRb.start_service('druby://127.0.0.1:10002', Puts)
-
-  # terminal4
-  $ irb -r drb
-  puts = DRbObject.new_with_uri 'druby://127.0.0.1:10002'
-  puts.puts 'おおきに'
-
-  #
-  # => ?
+  # image
+  # src = image/dist-4.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
 
 = 分散オブジェクトシステム
 
-  # rouge ruby
-  # terminal3
-  $ irb -r drb
-  class Puts
-    def self.puts(str)
-      $stdout.puts(str)
-    end
-  end
-  DRb.start_service('druby://127.0.0.1:10002', Puts)
+  # image
+  # src = image/dist-5.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
 
-  # terminal4
-  $ irb -r drb
-  server = DRbObject.new_with_uri 'druby://127.0.0.1:10002'
-  server.puts 'おおきに'
+= 分散オブジェクトシステム
 
-  # terminal3
-  # => おおきに
+  # image
+  # src = image/dist-6.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+
+= 分散オブジェクトシステム
+
+  # image
+  # src = image/dist-7.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
+
+= 分散オブジェクトシステム
+
+  # image
+  # src = image/dist-8.png
+  # relative_height = 80
+  # align = center
+  # vertical_align = center
 
 = 分散オブジェクトシステム
 
@@ -202,6 +179,21 @@
   # vertical_align = bottom
   # relative_padding_right = -4
   # relative_padding_bottom = -14
+
+= 分散オブジェクトシステム
+
+  # rouge bash
+  # terminal
+  $ irb -r drb
+  rabbit = DRbObject.new_with_uri 'druby://127.0.0.1:10101' # rabbitのdRubyサーバのuri
+  rabbit.title
+  # => "dRuby 入門者による\nあなたの身近にある\ndRuby 入門"
+  %w[Rabbit最高  🐇🐢🐇🐢🐇🐢🐇🐢🐇🐢 dRubyすごい 大阪たのしい🐙].each { rabbit.append_comment _1 }
+  rabbit.available_interfaces
+  # => [...]
+  rabbit.toggle_fullscreen
+
+スタブを介してメッセージを送ることで Rabbit を操作できる
 
 = 分散オブジェクトシステム
 
@@ -385,6 +377,14 @@
 = ActiveSupport
 
   # image
+  # src = image/activesupport-0.png
+  # relative_height = 90
+  # align = center
+  # vertical_align = center
+
+= ActiveSupport
+
+  # image
   # src = image/activesupport-1.png
   # relative_height = 90
   # align = center
@@ -500,15 +500,8 @@
 
 = Rabbit
 
-  # rouge ruby
-  DRb.start_service(@options.druby_uri, front)
-
-フロントオブジェクトを触ることができる
-
-= Rabbit
-
   # rouge bash
-  # terminal5
+  # terminal
   $ irb -r drb
   rabbit = DRbObject.new_with_uri 'druby://127.0.0.1:10101' # rabbitのdRubyサーバのuri
   rabbit.title
@@ -518,7 +511,7 @@
   # => [...]
   rabbit.toggle_fullscreen
 
-フロントオブジェクトにメッセージを送ることで Rabbit を操作できる
+スタブを介してメッセージを送ることで Rabbit を操作できる
 
 = Rabbit
 
@@ -577,55 +570,39 @@
     * リファレンスデータベースの更新、表示、検索、html 生成など
     * ((<URL:https://github.com/rurema/bitclust>))
 
-= るりま
-
-  * Ruby リファレンスマニュアル改善計画進行中
-    * るりま大刷新計画2022最終報告
-      * ((<URL:https://gist.github.com/znz/c854585d93fb2c4b6b181870c5a509a2>))
-      * ((<URL:https://www.ruby.or.jp/ja/news/20230808>))
-    * History of Japanese Ruby reference manual, and future - Kazuhiro NISHIYAMA
-      * ((<URL:https://slide.rabbit-shocker.org/authors/znz/rubykaigi2022-rurema/>))
-      * ((<URL:https://rubykaigi.org/2022/presentations/znz.html>))
-    * docs.ruby-lang.org/ja/ の生成方法を変えた - Kazuhiro NISHIYAMA
-      * ((<URL:https://speakerdeck.com/znz/nosheng-cheng-fang-fa-wobian-eta>))
-
 = BitClust
 
   * BitClust データベース
-    * rd をコンパイル
-    * データをテキストファイルで持つ
-
-  # rouge bash
-  # BitClust データベースの初期化・生成
-  bitclust setup
-
-  # BitClust データベースから指定した種類(ここではライブラリ)のエントリをリストする
-  bitclust list --library
-
-  # BitClust データベースから静的 html を生成
-  bitclust statichtml -o ~/bitclust-html
-
-  # リファレンスの 1 ファイルから html を生成
-  bitclust htmlfile refm/api/src/_builtin/Range > Range.html
+    * Ruby のクラスをふつうに使う
+    * rd をコンパイルしたデータを持つ
+    * テキストファイルで永続化
+      * 人間可読のテキスト
+  * MySQL でも PostgreSQL でも Redis でもないデータベース
+  * SQL も O/R マッパーも要らない
 
 = BitClust
 
   * refe((-ReFe\n((<URL:https://i.loveruby.net/ja/prog/refe.html>))-))
-    * Ruby リファレンスマニュアルのエントリを引くためのコマンドライン用ツール
-    * BitClust データベースを利用
+    * るりまのエントリを引くためのコマンドライン用ツール
     * デーモン化
-      * データベースをフロントオブジェクトとして dRuby サーバを起動
+      * BitClust データベースをフロントオブジェクトとして dRuby サーバを起動
 
-  # rouge bash
-  refe --server=druby://127.0.0.1:12345
+  # rouge ruby
+  class BitClust::Server
+    def listen(url, foreground = false)
+      # ...
+      WEBrick::Daemon.start unless foreground
+      DRb.start_service url, @db
+      DRb.thread.join
+    end
+  end
 
 = BitClust
 
-  * データベースとしての Ruby
+  * データベースとしての Ruby プロセス
     * PORO でデータ操作
     * ファイルに永続化
-    * SQL とか O/R マッピングとか要らない
-    * ふつうの Ruby プログラミング
+  * ふつうの Ruby プログラミングの延長線上で\nデータベースサーバを作れる
 
 = わたしたちの身近にある dRuby
 
@@ -642,12 +619,22 @@
   # relative_padding_right = -4
   # relative_padding_bottom = -14
 
-= わたしたちの身近にある dRuby
+= たとえば明日から dRuby を使うとしたら
 
-  * プリローダ
-  * 並列
-  * API
-  * データベース
+　
+= たとえば明日から dRuby を使うとしたら
+
+  * PoC
+    * Web サーバを dRuby で立ててみる
+    * DB サーバを dRuby で立ててみる
+  * 手に馴染む道具で検討して固まったら本実装に入るのも手かも
+
+= たとえば明日から dRuby を使うとしたら
+
+  * PoC
+    * Web サーバを dRuby で立ててみる
+    * DB サーバを dRuby で立ててみる
+  * 手に馴染む道具で検討して固まったら本実装に入るのも手かも
 
   # image
   # src = image/nyuumon.png
@@ -656,7 +643,6 @@
   # vertical_align = bottom
   # relative_padding_right = -4
   # relative_padding_bottom = -14
-
 
 = dRuby
 
@@ -667,5 +653,9 @@
   # align = center
   # vertical_align = center
   # relative_margin_top = -10
+
+= Special Thanks
+
+* @youchan
 
 = ご清聴\nありがとう\nございました
